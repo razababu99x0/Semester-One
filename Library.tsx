@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Play, Download, List, Grid3x3, CheckCircle2, Clock, Bookmark, NotebookPen } from "lucide-react";
-import { useBook } from "@/stores/useBook";
-import { CHAPTERS } from "@/data";
-import { exportChapter } from "@/services/exporters";
-import type { Chapter } from "@/types/content";
+import { useBook } from "./useBook";
+import { CHAPTERS } from "./index";
+import { exportChapter } from "./exporters";
+import type { Chapter } from "./content";
 
 const PortalArt: React.FC<{ chapter: Chapter; animate: boolean }> = ({ chapter, animate }) => (
   <div
