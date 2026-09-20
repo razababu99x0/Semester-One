@@ -1,4 +1,4 @@
-import type { Chapter, Topic } from "@/types/content";
+import type { Chapter, Topic } from "./content";
 
 const T = (t: Topic) => t;
 
