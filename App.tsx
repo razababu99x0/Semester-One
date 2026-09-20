@@ -1,13 +1,13 @@
 import React from "react";
 import { Wrench } from "lucide-react";
-import Landing from "@/app/Landing";
-import Library from "@/app/Library";
-import Reader from "@/components/book/Reader";
-import Notebook from "@/components/notes/Notebook";
-import Tools from "@/components/navigation/Tools";
-import { useBook } from "@/stores/useBook";
-import { applyEdition } from "@/themes/themes";
-import { initInstall, registerSW, cacheAppShell } from "@/services/offline";
+import Landing from "./Landing";
+import Library from "./Library";
+import Reader from "./Reader";
+import Notebook from "./Notebook";
+import Tools from "./Tools";
+import { useBook } from "./useBook";
+import { applyEdition } from "./themes";
+import { initInstall, registerSW, cacheAppShell } from "./offline";
 
 type Tab = "search" | "contents" | "formulas" | "marks" | "progress" | "themes" | "settings" | "export";
 
