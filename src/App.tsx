@@ -70,7 +70,7 @@ export default function App() {
       {screen === "notes" && <Notebook />}
 
       <a
-        href="https://github.com/razababu99x0"
+        href="https://github.com/razababu99x0/Protfilio"
         target="_blank"
         rel="noreferrer"
         className="no-print fixed bottom-4 left-4 z-40"
