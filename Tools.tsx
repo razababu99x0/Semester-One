@@ -2,14 +2,14 @@ import React from "react";
 import {
   X, Search, List, Sigma, Bookmark, BarChart3, Palette, Settings2, FileDown, Flame, Trash2,
 } from "lucide-react";
-import MathTex from "@/components/formulas/Math";
-import { useBook, type LearnMode, type PerfLevel } from "@/stores/useBook";
-import { EDITIONS, type EditionId } from "@/themes/themes";
-import { CHAPTERS, formulaLibrary, searchBook, totalTopics } from "@/data";
-import { notesDB, quizDB } from "@/services/db";
-import { exportChapter, exportFormulaSheet, exportQuizReport, exportStudyNotes, exportNotebook } from "@/services/exporters";
-import { LEVELS, type Level } from "@/services/voice";
-import { downloadCompleteBook, promptInstall, cacheAppShell } from "@/services/offline";
+import MathTex from "./Math";
+import { useBook, type LearnMode, type PerfLevel } from "./useBook";
+import { EDITIONS, type EditionId } from "./themes";
+import { CHAPTERS, formulaLibrary, searchBook, totalTopics } from "./index";
+import { notesDB, quizDB } from "./db";
+import { exportChapter, exportFormulaSheet, exportQuizReport, exportStudyNotes, exportNotebook } from "./exporters";
+import { LEVELS, type Level } from "./voice";
+import { downloadCompleteBook, promptInstall, cacheAppShell } from "./offline";
 
 type Tab = "search" | "contents" | "formulas" | "marks" | "progress" | "themes" | "settings" | "export";
 
