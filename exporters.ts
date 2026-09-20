@@ -1,7 +1,7 @@
-import { CHAPTERS, formulaLibrary, findChapter } from "@/data";
-import { getExpansion } from "@/data/expansions";
-import type { Chapter } from "@/types/content";
-import { notesDB, quizDB, pagesDB } from "@/services/db";
+import { CHAPTERS, formulaLibrary, findChapter } from "./index";
+import { getExpansion } from "./expansions";
+import type { Chapter } from "./content";
+import { notesDB, quizDB, pagesDB } from "./db";
 
 /* ------------------------------------------------------------------ */
 /* Print engine                                                        */
