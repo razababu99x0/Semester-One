@@ -1,0 +1,12 @@
+import { JSDOM } from "jsdom";
+const dom = new JSDOM("<!doctype html><html><body></body></html>", { url: "http://localhost/" });
+global.window=dom.window; global.document=dom.window.document; global.navigator=dom.window.navigator;
+const { CHAPTERS, allTopics, totalTopics } = await import("./src/data/index.ts");
+const { EXPANSIONS } = await import("./src/data/expansions.ts");
+const missing = allTopics().filter(({topic}) => !EXPANSIONS[topic.id]).map(x=>x.topic.id);
+console.log("topics:", totalTopics, "expansions:", Object.keys(EXPANSIONS).length, "missing:", missing);
+const orphan = Object.keys(EXPANSIONS).filter(k=>!allTopics().some(t=>t.topic.id===k));
+console.log("orphan expansions:", orphan);
+let words=0; allTopics().forEach(({topic})=>{ words += JSON.stringify(topic).split(/\s+/).length; });
+Object.values(EXPANSIONS).forEach(e=>{ words += JSON.stringify(e).split(/\s+/).length; });
+console.log("approx words of content:", words);

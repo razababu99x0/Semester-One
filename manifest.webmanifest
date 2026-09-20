@@ -1,0 +1,15 @@
+{
+  "name": "The Living Physics Book",
+  "short_name": "Physics Book",
+  "description": "Mathematical Physics & Classical Mechanics — an interactive, fully offline 3D physics book for B.Sc. Physics Semester I.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05070f",
+  "theme_color": "#05070f",
+  "categories": ["education", "science"],
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

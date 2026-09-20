@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #05070f;
+  --bg-2: #0a1020;
+  --fg: #e8eefc;
+  --muted: #a7b6d4;
+  --accent: #4cc9ff;
+  --accent-2: #ffb454;
+  --accent-3: #7aa2ff;
+  --paper: #f3f1e7;
+  --paper-2: #e7e3d3;
+  --ink: #1a1a22;
+  --ink-soft: #4a4a58;
+  --line: #25304d;
+  --glow: 76, 201, 255;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --star: #9fd8ff;
+  --portal-a: #4cc9ff;
+  --portal-b: #ffb454;
+  --fs: 1;
+}
+
+html {
+  font-size: calc(16px * var(--fs));
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .serif { font-family: var(--serif); }
+
+*:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
+
+.hc body, html[data-contrast="high"] {
+  --paper: #ffffff;
+  --ink: #000000;
+  --ink-soft: #222222;
+  --fg: #ffffff;
+  --muted: #e6e6e6;
+  --bg: #000000;
+  --bg-2: #0a0a0a;
+}
+
+/* ---------- surfaces ---------- */
+.panel {
+  background: color-mix(in srgb, var(--bg-2) 86%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+}
+
+.paper {
+  background:
+    radial-gradient(120% 90% at 20% 0%, color-mix(in srgb, var(--paper) 100%, white 6%) 0%, var(--paper) 45%, var(--paper-2) 100%);
+  color: var(--ink);
+  position: relative;
+}
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(0, 0, 0, 0.035) 0 1px, transparent 1px),
+    radial-gradient(circle at 70% 60%, rgba(0, 0, 0, 0.03) 0 1px, transparent 1px);
+  background-size: 7px 7px, 11px 11px;
+  mix-blend-mode: multiply;
+}
+.paper h1, .paper h2, .paper h3, .paper h4 { color: var(--ink); }
+.paper p, .paper li { color: var(--ink); }
+.paper .soft { color: var(--ink-soft); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-2) 80%, transparent);
+  color: var(--fg);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.btn:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--bg-2)); }
+.btn:active { transform: translateY(1px); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-3));
+  color: #06101c;
+  border-color: transparent;
+}
+.hc .btn-primary, html[data-contrast="high"] .btn-primary { color: #000; }
+.btn-ghost { background: transparent; }
+.btn-ink {
+  border-color: color-mix(in srgb, var(--ink) 25%, transparent);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  color: var(--ink);
+}
+.btn-ink:hover { background: color-mix(in srgb, var(--ink) 12%, transparent); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.22rem 0.6rem; border-radius: 999px;
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+input[type="range"] { accent-color: var(--accent); height: 28px; width: 100%; }
+.paper input[type="range"] { accent-color: color-mix(in srgb, var(--ink) 70%, var(--accent)); }
+
+/* ---------- math ---------- */
+.mathroot {
+  font-family: var(--serif);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.mathinline { display: inline-flex; align-items: center; flex-wrap: wrap; white-space: normal; }
+.mathblock {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+  font-size: 1.28rem; padding: 0.6rem 0.4rem; white-space: normal;
+}
+.mathvar { font-style: italic; }
+.mathtext { font-style: normal; font-family: var(--sans); font-size: 0.9em; padding: 0 0.12em; }
+.mathbig { font-size: 1.5em; line-height: 0.8; padding: 0 0.1em; }
+.mathscript { font-size: 0.68em; font-style: italic; }
+.mathfrac {
+  display: inline-flex; flex-direction: column; align-items: center;
+  vertical-align: middle; margin: 0 0.25em; text-align: center;
+}
+.mathnum { border-bottom: 1.4px solid currentColor; padding: 0 0.3em 0.08em; }
+.mathden { padding: 0.08em 0.3em 0; }
+.mathsqrt { display: inline-flex; align-items: stretch; }
+.mathsqrtbody { border-top: 1.4px solid currentColor; padding: 0.1em 0.2em 0; margin-left: -0.08em; }
+.mathacc { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; }
+.mathaccmark { font-size: 0.62em; height: 0.5em; line-height: 0.5em; }
+.acc-overline .mathaccmark, .acc-bar .mathaccmark { transform: translateY(0.12em); }
+
+/* ---------- misc ---------- */
+.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: var(--line); border-radius: 8px; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 8px; top: -60px; z-index: 100;
+  background: var(--accent); color: #000; padding: 10px 16px; border-radius: 8px;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 8px; }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  .paper { background: #fff !important; }
+  .print-page { break-after: page; }
+}
+
+html[data-motion="reduced"] * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.08s !important;
+}
+
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.rise { animation: floatUp 0.6s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+
+@keyframes twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+/* full-screen focus mode: strips decoration, keeps every control */
+.focus-mode .chip { display: none; }
+.focus-mode header { position: static !important; backdrop-filter: none; }
+.focus-mode .panel { border-color: transparent; }
+
+/* ---------- long-form reading ---------- */
+.paper { --lead: 1.78; }
+.paper p { max-width: 74ch; }
+.paper h2, .paper h3, .paper h4 { text-wrap: balance; }
+.paper ul, .paper ol { max-width: 74ch; }
+.paper table { max-width: 100%; }
+.paper strong { font-weight: 700; }
+.paper .chip { letter-spacing: 0.05em; }
+
+/* drop cap on the first section of a topic for a real book feel */
+#sec-awaken .serif + * > p:first-child::first-letter,
+#sec-awaken p.serif:first-of-type::first-letter {
+  float: left;
+  font-family: var(--serif);
+  font-size: 3.1rem;
+  line-height: 0.82;
+  padding: 0.08em 0.12em 0 0;
+  color: var(--ink);
+  font-weight: 700;
+}
+html[data-motion="reduced"] #sec-awaken p.serif:first-of-type::first-letter { float: none; font-size: inherit; padding: 0; }
+
+.scroll-mt-24 { scroll-margin-top: 6rem; }
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* keep long formulas from breaking the layout on small screens */
+.mathblock { overflow-x: auto; max-width: 100%; }
+.mathroot { max-width: 100%; }
+
+/* notebook textarea inherits the ruled background cleanly */
+textarea { font-family: inherit; }
+
+@media (max-width: 480px) {
+  .mathblock { font-size: 1.08rem; }
+  .paper { padding-left: 1.05rem; padding-right: 1.05rem; }
+}
+
+/* focus mode hides the rails and chrome, keeping the text */
+.focus-mode nav[aria-label="Sections of this topic"] { display: none; }
+.focus-mode .panel { border-color: transparent; }
