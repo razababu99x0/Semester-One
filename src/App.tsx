@@ -70,7 +70,7 @@ export default function App() {
       {screen === "notes" && <Notebook />}
 
       <a
-        href="https://github.com/razababu99x0/Protfilio"
+        href="https://dynamicdevelopments.vercel.app/"
         target="_blank"
         rel="noreferrer"
         className="no-print fixed bottom-4 left-4 z-40"
@@ -83,13 +83,18 @@ export default function App() {
           boxShadow: "0 12px 30px rgba(0,0,0,0.24)",
           backdropFilter: "blur(12px)",
           fontSize: 12,
+          maxWidth: "calc(100vw - 96px)",
+          textAlign: "center",
+          minHeight: 44,
+          display: "flex",
+          alignItems: "center",
           fontWeight: 700,
           textDecoration: "none",
           letterSpacing: "0.02em",
         }}
-        aria-label="Developed by Sajid Raza — open portfolio"
+        aria-label="Developed by Dynamic Developments — visit website"
       >
-        Developed by Sajid Raza · Portfolio
+        Developed by Dynamic Developments
       </a>
 
       <button
