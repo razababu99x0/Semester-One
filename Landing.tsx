@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import {
   BookOpen, Compass, Download, DownloadCloud, Palette, Accessibility, Play, WifiOff, CheckCircle2, NotebookPen,
 } from "lucide-react";
-import BookScene from "@/scenes/landing/BookScene";
-import SafeScene from "@/components/accessibility/SafeScene";
-import { useBook } from "@/stores/useBook";
-import { EDITIONS } from "@/themes/themes";
-import { downloadCompleteBook, promptInstall, cacheAppShell, isOfflineReady } from "@/services/offline";
-import { totalTopics, totalMinutes, CHAPTERS, findTopic } from "@/data";
+import BookScene from "./BookScene";
+import SafeScene from "./SafeScene";
+import { useBook } from "./useBook";
+import { EDITIONS } from "./themes";
+import { downloadCompleteBook, promptInstall, cacheAppShell, isOfflineReady } from "./offline";
+import { totalTopics, totalMinutes, CHAPTERS, findTopic } from "./index";
 
 export const Landing: React.FC<{ onTools: (tab?: string) => void }> = ({ onTools }) => {
   const { go, openTopic, lastTopic, edition, perf, reducedMotion, completed } = useBook();
