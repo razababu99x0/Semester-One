@@ -2,10 +2,10 @@ import React from "react";
 import {
   ArrowLeft, Plus, Search, Tag, Trash2, Pin, PinOff, Printer, NotebookPen, Save, X, Link2,
 } from "lucide-react";
-import { pagesDB, notesDB, type PageRecord } from "@/services/db";
-import { useBook } from "@/stores/useBook";
-import { CHAPTERS } from "@/data";
-import { exportNotebook } from "@/services/exporters";
+import { pagesDB, notesDB, type PageRecord } from "./db";
+import { useBook } from "./useBook";
+import { CHAPTERS } from "./index";
+import { exportNotebook } from "./exporters";
 
 const COLOURS = [
   { id: "cream", label: "Parchment", bg: "#fbf6e8", line: "#d8cfb4" },
