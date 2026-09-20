@@ -1,8 +1,8 @@
 import React from "react";
 import { Play, Pause, RotateCcw, SkipBack, SkipForward, Move, Eye } from "lucide-react";
 import { getSim, type P, type Palette } from "./registry";
-import type { SimId } from "@/types/content";
-import { useBook } from "@/stores/useBook";
+import type { SimId } from "./content";
+import { useBook } from "./useBook";
 
 const readPalette = (): Palette => {
   const s = getComputedStyle(document.documentElement);
