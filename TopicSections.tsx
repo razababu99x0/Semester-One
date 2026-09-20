@@ -4,13 +4,13 @@ import {
   AlertTriangle, ClipboardCheck, Trophy, ListChecks, Bookmark, CheckCircle2,
   Telescope, Quote, Link2, NotebookPen,
 } from "lucide-react";
-import MathTex from "@/components/formulas/Math";
-import SimPlayer from "@/components/simulations/SimPlayer";
-import { FormulaAssembly, Quiz, NotePad, RisingTitle } from "@/components/learning/Interactives";
-import type { Chapter, Topic } from "@/types/content";
-import { useBook, type LearnMode } from "@/stores/useBook";
-import { voice, sectionIntro, type Level } from "@/services/voice";
-import { getExpansion } from "@/data/expansions";
+import MathTex from "./Math";
+import SimPlayer from "./SimPlayer";
+import { FormulaAssembly, Quiz, NotePad, RisingTitle } from "./Interactives";
+import type { Chapter, Topic } from "./content";
+import { useBook, type LearnMode } from "./useBook";
+import { voice, sectionIntro, type Level } from "./voice";
+import { getExpansion } from "./expansions";
 
 export interface Section {
   id: string;
