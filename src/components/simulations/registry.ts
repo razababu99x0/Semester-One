@@ -1,4 +1,4 @@
-import type { SimId } from "./content";
+import type { SimId } from "@/types/content";
 
 export interface Param {
   key: string;

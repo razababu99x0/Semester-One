@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { EditionId } from "./themes";
-import type { Level } from "./voice";
+import type { EditionId } from "@/themes/themes";
+import type { Level } from "@/services/voice";
 
 export type Screen = "landing" | "library" | "reader" | "notes";
 export type LearnMode = "story" | "simple" | "academic" | "exam";

@@ -1,5 +1,5 @@
-import type { Topic } from "./content";
-import { getExpansion } from "./expansions";
+import type { Topic } from "@/types/content";
+import { getExpansion } from "@/data/expansions";
 
 /**
  * Language levels.
