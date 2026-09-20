@@ -1,8 +1,8 @@
-import { calculus } from "./chapters/calculus";
-import { vectors } from "./chapters/vectors";
-import { dynamics } from "./chapters/dynamics";
-import { central } from "./chapters/central";
-import type { Chapter, Topic } from "@/types/content";
+import { calculus } from "./calculus";
+import { vectors } from "./vectors";
+import { dynamics } from "./dynamics";
+import { central } from "./central";
+import type { Chapter, Topic } from "./content";
 
 export const CHAPTERS: Chapter[] = [calculus, vectors, dynamics, central];
 
