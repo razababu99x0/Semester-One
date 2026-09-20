@@ -1,9 +1,9 @@
 import React from "react";
 import { Check, X, Lightbulb, RotateCcw, Shuffle, NotebookPen, FilePlus2 } from "lucide-react";
-import MathTex from "@/components/formulas/Math";
-import type { QuizQuestion } from "@/types/content";
-import { useBook } from "@/stores/useBook";
-import { notesDB, quizDB, pagesDB } from "@/services/db";
+import MathTex from "./Math";
+import type { QuizQuestion } from "./content";
+import { useBook } from "./useBook";
+import { notesDB, quizDB, pagesDB } from "./db";
 
 /* ------------------------------------------------------------------ */
 /* Rising letters — words gently lift off the page when it opens        */
