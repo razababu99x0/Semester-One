@@ -1,4 +1,4 @@
-import type { Chapter } from "@/types/content";
+import type { Chapter } from "./content";
 
 export const calculus: Chapter = {
   id: "calculus",
