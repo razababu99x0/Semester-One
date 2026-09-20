@@ -5,11 +5,11 @@ import {
   List, X, NotebookPen, Layers, Type,
 } from "lucide-react";
 import { buildSections } from "./TopicSections";
-import { RisingTitle } from "@/components/learning/Interactives";
-import { useBook, type LearnMode } from "@/stores/useBook";
-import { findChapter, findTopic } from "@/data";
-import { LEVELS, type Level } from "@/services/voice";
-import { exportChapter } from "@/services/exporters";
+import { RisingTitle } from "./Interactives";
+import { useBook, type LearnMode } from "./useBook";
+import { findChapter, findTopic } from "./index";
+import { LEVELS, type Level } from "./voice";
+import { exportChapter } from "./exporters";
 
 /* ------------------------------------------------------------------ */
 /* Sticky rail: where you are inside the topic                         */
