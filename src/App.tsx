@@ -69,6 +69,29 @@ export default function App() {
       {screen === "reader" && <Reader />}
       {screen === "notes" && <Notebook />}
 
+      <a
+        href="https://github.com/razababu99x0"
+        target="_blank"
+        rel="noreferrer"
+        className="no-print fixed bottom-4 left-4 z-40"
+        style={{
+          padding: "10px 14px",
+          borderRadius: 999,
+          background: "rgba(8, 15, 32, 0.82)",
+          color: "#fff",
+          border: "1px solid rgba(255,255,255,0.16)",
+          boxShadow: "0 12px 30px rgba(0,0,0,0.24)",
+          backdropFilter: "blur(12px)",
+          fontSize: 12,
+          fontWeight: 700,
+          textDecoration: "none",
+          letterSpacing: "0.02em",
+        }}
+        aria-label="Developed by Sajid Raza — open portfolio"
+      >
+        Developed by Sajid Raza · Portfolio
+      </a>
+
       <button
         className="btn btn-primary no-print fixed bottom-4 right-4 z-40 shadow-lg"
         style={{ minHeight: 52, minWidth: 52, borderRadius: 999 }}
