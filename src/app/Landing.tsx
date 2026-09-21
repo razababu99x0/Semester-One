@@ -1,168 +1,62 @@
-import React from "react";
-import { motion } from "framer-motion";
-import {
-  BookOpen, Compass, Download, DownloadCloud, Palette, Accessibility, Play, WifiOff, CheckCircle2, NotebookPen,
-} from "lucide-react";
-import BookScene from "@/scenes/landing/BookScene";
-import SafeScene from "@/components/accessibility/SafeScene";
-import { useBook } from "@/stores/useBook";
-import { EDITIONS } from "@/themes/themes";
-import { downloadCompleteBook, promptInstall, cacheAppShell, isOfflineReady } from "@/services/offline";
-import { totalTopics, totalMinutes, CHAPTERS, findTopic } from "@/data";
+import React from 'react';
+import { ArrowUpRight, ArrowRight, BookOpen, Search, NotebookPen, Download, Palette, Accessibility, Pause, Play, CheckCircle2, Sigma, Bookmark, Compass } from 'lucide-react';
+import { useBook } from '@/stores/useBook';
+import { EDITIONS } from '@/themes/themes';
+import { downloadCompleteBook, promptInstall, cacheAppShell, isOfflineReady } from '@/services/offline';
+import { totalTopics, totalMinutes, CHAPTERS, allTopics, searchBook } from '@/data';
+import './semester.css';
 
-export const Landing: React.FC<{ onTools: (tab?: string) => void }> = ({ onTools }) => {
-  const { go, openTopic, lastTopic, edition, perf, reducedMotion, completed } = useBook();
-  const [open, setOpen] = React.useState(false);
-  const [msg, setMsg] = React.useState<string | null>(null);
+export default function Landing({ onTools }: { onTools: (tab?: string) => void }) {
+  const { go, openTopic, lastTopic, edition, reducedMotion, completed } = useBook();
+  const [paused, setPaused] = React.useState(false);
+  const [query, setQuery] = React.useState('');
   const [ready, setReady] = React.useState(false);
-  const use3D = perf !== "lite" && !reducedMotion;
-
-  React.useEffect(() => {
-    isOfflineReady().then(setReady);
-  }, []);
-
-  const enter = () => {
-    setOpen(true);
-    window.setTimeout(() => go("library"), reducedMotion ? 150 : 1400);
+  const [busy, setBusy] = React.useState(false);
+  const [msg, setMsg] = React.useState('');
+  const topics = allTopics();
+  const last = topics.find(({ topic }) => topic.id === lastTopic);
+  const next = topics.find(({ topic }) => !completed.includes(topic.id)) ?? topics[0];
+  const target = last ?? next;
+  const done = topics.filter(({ topic }) => completed.includes(topic.id)).length;
+  const hits = React.useMemo(() => searchBook(query), [query]);
+  React.useEffect(() => { isOfflineReady().then(setReady); }, []);
+  const install = async () => {
+    setBusy(true);
+    try {
+      const message = await promptInstall();
+      const cached = await cacheAppShell();
+      setReady(cached);
+      setMsg(cached ? message + ' Book saved for offline reading.' : 'Offline storage is unavailable. You can still download the complete book.');
+    } catch { setMsg('Could not save the book offline. Please try the complete-book download.'); }
+    finally { setBusy(false); }
   };
-
-  const cont = () => {
-    if (!lastTopic) return go("library");
-    const ch = CHAPTERS.find((c) => c.topics.some((t) => t.id === lastTopic));
-    if (ch && findTopic(ch.id, lastTopic)) openTopic(ch.id, lastTopic);
-    else go("library");
-  };
-
-  const ed = EDITIONS.find((e) => e.id === edition)!;
-
-  return (
-    <main className="relative min-h-screen overflow-hidden" id="main">
-      <div className="absolute inset-0" style={{ background: "radial-gradient(120% 90% at 50% 10%, var(--bg-2), var(--bg) 70%)" }} />
-      {use3D && (
-        <div className="absolute inset-0" aria-hidden>
-          <SafeScene>
-          <BookScene
-            open={open}
-            accent={ed.vars["--accent"]}
-            accent2={ed.vars["--accent-2"]}
-            star={ed.vars["--star"]}
-            quality={perf === "high" ? "high" : "balanced"}
-          />
-          </SafeScene>
-        </div>
-      )}
-
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-5 py-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reducedMotion ? 0.1 : 1.1 }}
-        >
-          <p className="chip mb-5">{ed.name} edition</p>
-          <h1 className="serif text-4xl sm:text-6xl font-bold leading-[1.05]" style={{ textShadow: "0 0 40px rgba(var(--glow),0.35)" }}>
-            The Living Physics Book
-          </h1>
-          <p className="mt-3 text-lg sm:text-xl" style={{ color: "var(--accent)" }}>
-            Where every law comes alive
-          </p>
-          <p className="mt-4 text-[0.98rem] soft" style={{ color: "var(--muted)" }}>
-            Mathematical Physics &amp; Classical Mechanics · B.Sc. Physics, Semester I
-          </p>
-          <p className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
-            4 chapters · {totalTopics} topics · ~{Math.round(totalMinutes / 60)} hours of guided study · works with no internet
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: reducedMotion ? 0 : 0.5, duration: 0.8 }}
-          className="mt-9 flex flex-wrap items-center justify-center gap-3"
-        >
-          <button className="btn btn-primary text-base px-6" onClick={enter} style={{ minHeight: 52 }}>
-            <BookOpen size={18} /> Enter the Book
-          </button>
-          <button className="btn" onClick={cont} disabled={!lastTopic}>
-            <Play size={16} /> Continue learning
-          </button>
-          <button className="btn" onClick={() => go("library")}>
-            <Compass size={16} /> Explore chapters
-          </button>
-          <button className="btn" onClick={() => go("notes")}>
-            <NotebookPen size={16} /> My notebook
-          </button>
-        </motion.div>
-
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-          <button
-            className="btn btn-ghost"
-            onClick={async () => {
-              const m = await promptInstall();
-              await cacheAppShell();
-              setReady(await isOfflineReady());
-              setMsg(m);
-            }}
-          >
-            <Download size={16} /> Install offline app
-          </button>
-          <button className="btn btn-ghost" onClick={downloadCompleteBook}>
-            <DownloadCloud size={16} /> Download complete book
-          </button>
-          <button className="btn btn-ghost" onClick={() => onTools("themes")}>
-            <Palette size={16} /> Choose edition
-          </button>
-          <button className="btn btn-ghost" onClick={() => onTools("settings")}>
-            <Accessibility size={16} /> Accessibility settings
-          </button>
-        </div>
-
-        <div className="mt-5 flex items-center gap-3 text-xs" style={{ color: "var(--muted)" }}>
-          {ready ? (
-            <span className="inline-flex items-center gap-1" style={{ color: "var(--accent-2)" }}>
-              <CheckCircle2 size={14} /> Offline ready — every page, formula and simulation is stored on this device
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1">
-              <WifiOff size={14} /> Press “Install offline app” to cache the complete book
-            </span>
-          )}
-        </div>
-
-        {msg && (
-          <p className="mt-4 max-w-xl text-sm panel p-3" role="status">
-            {msg}
-          </p>
-        )}
-
-        <div className="mt-10 grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {CHAPTERS.map((c) => {
-            const done = c.topics.filter((t) => completed.includes(t.id)).length;
-            return (
-              <button
-                key={c.id}
-                onClick={() => go("library", c.id)}
-                className="panel p-4 text-left transition hover:-translate-y-[2px]"
-              >
-                <p className="text-[0.7rem] font-bold uppercase tracking-widest" style={{ color: c.accent }}>
-                  Unit {c.unit}
-                </p>
-                <p className="serif text-lg font-bold mt-1">{c.title}</p>
-                <p className="text-xs mt-1" style={{ color: "var(--muted)" }}>
-                  {c.topics.length} topics · {done}/{c.topics.length} complete
-                </p>
-              </button>
-            );
-          })}
-        </div>
-
-        <p className="mt-8 max-w-2xl text-xs" style={{ color: "var(--muted)" }}>
-          Sound is off by default and there is no autoplaying audio. All motion respects your
-          reduced-motion preference, and every simulation has a keyboard-accessible slider and a
-          written description.
-        </p>
+  return <main id="main" className="semester-home">
+    <header className="semester-nav">
+      <a className="semester-brand" href="#main" aria-label="Semester One home"><span><BookOpen size={22}/></span><b>SEMESTER<span>ONE / PHYSICS</span></b></a>
+      <nav aria-label="Study navigation"><button onClick={() => go('library')}>Chapters</button><button onClick={() => onTools('formulas')}>Formula atlas</button><button onClick={() => go('notes')}>Notebook</button></nav>
+      <button className="semester-search" onClick={() => onTools('search')} aria-label="Search the book"><Search size={18}/><span>Search the book</span></button>
+    </header>
+    <section className="semester-hero">
+      <div className="semester-intro">
+        <p className="semester-eyebrow"><span/> AN INTERACTIVE FIELD GUIDE · B.SC. PHYSICS</p>
+        <h1>A little curiosity.<br/>An entire <em>universe.</em></h1>
+        <p className="semester-lead">The Living Physics Book</p>
+        <p className="semester-description">See the mathematics. Move the models. Understand the laws.<br/>Your first semester, brought to life.</p>
+        <div className="semester-actions"><button className="semester-primary" onClick={() => openTopic(target.chapter.id, target.topic.id)}>{last ? 'Continue learning' : 'Begin your journey'}<ArrowUpRight size={19}/></button><button className="semester-link" onClick={() => go('library')}>Explore chapters <ArrowRight size={17}/></button></div>
+        <div className="semester-stats"><div><strong>04</strong><span>CONNECTED CHAPTERS</span></div><div><strong>{totalTopics}</strong><span>TOPICS TO EXPLORE</span></div><div><strong>~{Math.round(totalMinutes / 60)}h</strong><span>GUIDED LEARNING</span></div></div>
       </div>
-    </main>
-  );
-};
-
-export default Landing;
+      <div className={'semester-scene' + (paused || reducedMotion ? ' is-still' : '')}>
+        <div className="scene-caption">VOL. 01 <span>MATHEMATICS × MECHANICS</span></div>
+        <div className="book-stage" aria-hidden="true"><div className="book-halo"/><div className="physics-volume"><div className="volume-pages"/><div className="volume-cover"><div className="volume-top">THE INTERACTIVE EDITION <span>01</span></div><p>The Living<br/>Physics<br/><i>Book.</i></p><div className="volume-orbit"><i/><i/><i/><b/></div><div className="volume-bottom">MATHEMATICAL PHYSICS<br/>& CLASSICAL MECHANICS<span>B.SC. · SEMESTER I</span></div></div></div><span className="floating-equation equation-one">F = ma</span><span className="floating-equation equation-two">∇ · F</span></div>
+        <div className="scene-bottom"><span>IDEAS YOU CAN INTERACT WITH</span><button onClick={() => setPaused(!paused)} aria-label={paused ? 'Play book animation' : 'Pause book animation'} aria-pressed={paused}>{paused ? <Play size={16}/> : <Pause size={16}/>}</button></div>
+      </div>
+    </section>
+    <section className="semester-resume" aria-label="Your study progress"><span className="resume-icon"><Compass size={25}/></span><div><p>{last ? 'PICK UP WHERE YOU LEFT OFF' : 'YOUR FIRST SMALL STEP'}</p><h2>{target.topic.title}</h2><span>Unit {target.chapter.unit} · {target.topic.minutes} minute lesson</span></div><div className="resume-progress"><span>{done} of {totalTopics} topics complete <b>{Math.round(done / totalTopics * 100)}%</b></span><progress value={done} max={totalTopics}/></div><button className="semester-link" onClick={() => openTopic(target.chapter.id, target.topic.id)}>{last ? 'Resume lesson' : 'Start lesson'}<ArrowRight size={18}/></button></section>
+    <section className="semester-chapters"><div className="semester-section-title"><div><p className="semester-eyebrow">THE SYLLABUS, REIMAGINED</p><h2>Four doors to understanding.</h2></div><button className="semester-link" onClick={() => go('library')}>View all topics <ArrowUpRight size={18}/></button></div>
+      <div className="chapter-grid">{CHAPTERS.map((c,i) => { const count=c.topics.filter(t=>completed.includes(t.id)).length; return <button key={c.id} className={'chapter-door chapter-door-'+i} onClick={() => go('library',c.id)}><div className="door-heading"><span>UNIT 0{c.unit}</span><ArrowUpRight size={21}/></div><div className="door-art" aria-hidden="true">{['∫','∇','F = ma','◎'][i]}<span>{['CHANGE / ACCUMULATION','DIRECTION / FIELDS','FORCE / MOTION','GRAVITY / ORBITS'][i]}</span></div><h3>{c.title}</h3><p>{c.topics.length} topics · {count} complete</p><div className="door-progress"><span style={{width:`${count/c.topics.length*100}%`}}/></div></button>})}</div>
+    </section>
+    <section className="semester-workbench"><div><p className="semester-eyebrow">LESS SEARCHING. MORE UNDERSTANDING.</p><h2>Your study workbench.</h2><p>Jump to a concept, collect your thoughts, or revisit the essentials before an exam.</p><label className="concept-search"><Search size={20}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Try Newton, gradient, or integral…" aria-label="Find a physics topic"/><kbd>SEARCH</kbd></label>{query.trim().length>=2 && <div className="concept-results" aria-live="polite">{hits.length ? hits.slice(0,5).map(hit=><button key={hit.topicId} onClick={()=>openTopic(hit.chapterId,hit.topicId)}><span>{hit.title}<small>{hit.chapter}</small></span><ArrowUpRight size={18}/></button>) : <p>No topics found. Try a broader term.</p>}</div>}</div><div className="workbench-grid">{[{icon:Sigma,title:'Formula atlas',description:'Equations, with context.',action:()=>onTools('formulas')},{icon:NotebookPen,title:'Your notebook',description:'Make the ideas your own.',action:()=>go('notes')},{icon:Bookmark,title:'Saved topics',description:'Return to what matters.',action:()=>onTools('marks')},{icon:CheckCircle2,title:'Learning progress',description:'See how far you’ve come.',action:()=>onTools('progress')}].map(x=><button key={x.title} onClick={x.action}><x.icon size={23}/><strong>{x.title}</strong><span>{x.description}</span><ArrowUpRight size={16}/></button>)}</div></section>
+    <section className="semester-offline"><div><Download size={26}/><div><h2>Your book. Anywhere.</h2><p>{ready ? 'Saved on this device for offline reading.' : 'Save the complete book, including its interactive simulations.'}</p></div></div><div className="offline-actions"><button className="btn" onClick={install} disabled={busy}>{busy ? 'Saving…' : ready ? 'Install offline app' : 'Save for offline'}</button><button className="btn btn-primary" onClick={downloadCompleteBook}>Download complete book <ArrowUpRight size={16}/></button></div>{msg && <p role="status" className="offline-message">{msg}</p>}</section>
+    <footer className="semester-footer"><span>THE LIVING PHYSICS BOOK <small>Made for curious minds. Built for deeper understanding.</small></span><div><button onClick={()=>onTools('themes')}><Palette size={16}/>{EDITIONS.find(e=>e.id===edition)?.name}</button><button onClick={()=>onTools('settings')}><Accessibility size={16}/>Accessibility</button></div></footer>
+  </main>;
+}

@@ -29,7 +29,7 @@ export const onInstallState = (fn: (s: InstallState) => void) => {
 
 export async function promptInstall(): Promise<string> {
   if (!deferredPrompt) {
-    return "Your browser did not offer an automatic install prompt. You can still install this book: in Chrome or Edge use the menu → “Install app”; on iOS Safari use Share → “Add to Home Screen”. The whole book is already stored in your browser cache and works offline.";
+    return "Your browser did not offer an automatic install prompt. You can still install this book: in Chrome or Edge use the menu → “Install app”; on iOS Safari use Share → “Add to Home Screen”. Use the offline status on the cover to check whether the book is saved.";
   }
   deferredPrompt.prompt();
   const { outcome } = await deferredPrompt.userChoice;
@@ -59,7 +59,7 @@ export async function isOfflineReady(): Promise<boolean> {
   if (!("caches" in window)) return false;
   try {
     const keys = await caches.keys();
-    for (const k of keys) {
+    for (const k of keys.filter(k => k === "living-physics-book-v3-studio")) {
       const c = await caches.open(k);
       const m = await c.match(new URL("./", location.href).href, { ignoreSearch: true });
       if (m) return true;
@@ -76,7 +76,7 @@ export async function isOfflineReady(): Promise<boolean> {
 export async function cacheAppShell(): Promise<boolean> {
   if (!("caches" in window)) return false;
   try {
-    const c = await caches.open("living-physics-book-v1");
+    const c = await caches.open("living-physics-book-v3-studio");
     await c.add(new Request(location.href, { cache: "reload" }));
     return true;
   } catch {

@@ -60,13 +60,13 @@ export const Library: React.FC = () => {
   const animate = !reducedMotion && perf !== "lite";
 
   return (
-    <main id="main" className="min-h-screen px-4 py-6" style={{ background: "radial-gradient(120% 80% at 50% 0%, var(--bg-2), var(--bg) 65%)" }}>
+    <main id="main" className="min-h-screen px-4 pt-6 pb-28" style={{ background: "radial-gradient(120% 80% at 50% 0%, var(--bg-2), var(--bg) 65%)" }}>
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-center gap-2 justify-between">
           <button className="btn btn-ghost" onClick={() => go("landing")}>
             <ArrowLeft size={16} /> Cover
           </button>
-          <h1 className="serif text-2xl sm:text-3xl font-bold">The Magical Library</h1>
+          <h1 className="serif text-2xl sm:text-3xl font-bold">Your chapter library</h1>
           <div className="flex gap-2">
             <button className="btn btn-ghost" onClick={() => setView("portals")} aria-pressed={view === "portals"}>
               <Grid3x3 size={16} /> Portals
