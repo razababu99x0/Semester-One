@@ -84,9 +84,9 @@ export function buildSections(chapter: Chapter, topic: Topic, level: Level): Sec
           <p className="text-[0.72rem] font-bold uppercase tracking-wider soft mb-1">{v.badge}</p>
           <p className="text-[1.02rem] leading-relaxed font-medium">{v.lead}</p>
           <H>Explained properly</H>
-          <p className="leading-relaxed">{v.main}</p>
+          <p className="leading-relaxed whitespace-pre-line">{v.main}</p>
           {v.main !== topic.understand.simple && level !== "standard" && (
-            <p className="leading-relaxed mt-2">{topic.understand.simple}</p>
+            <p className="leading-relaxed whitespace-pre-line mt-2">{topic.understand.simple}</p>
           )}
           <Callout title="A familiar analogy">{v.support}</Callout>
           <H>What to watch for in the demonstration</H>
@@ -193,7 +193,7 @@ export function buildSections(chapter: Chapter, topic: Topic, level: Level): Sec
               <p className="font-bold text-[0.94rem]">{e.title}</p>
               <p className="mt-1 italic">{e.problem}</p>
               <ol className="list-decimal pl-5 mt-2 space-y-1">{e.steps.map((s, k) => <li key={k}>{s}</li>)}</ol>
-              <p className="mt-2 font-semibold">Answer: {e.answer}</p>
+              <details className="mt-3 rounded-lg border border-black/15 p-3"><summary className="cursor-pointer font-semibold py-2 focus-visible:outline focus-visible:outline-2">Reveal answer · {e.title}</summary><p className="mt-2 leading-relaxed">{e.answer}</p></details>
             </div>
           ))}
           {topic.assemble && <FormulaAssembly prompt={topic.assemble.prompt} tokens={topic.assemble.tokens} />}

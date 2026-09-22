@@ -3,7 +3,7 @@
    the app shell caches the entire book: text, formulas, simulations, themes
    and 3D scenes. Nothing is ever fetched from a CDN. */
 
-const CACHE = "living-physics-book-v3-studio";
+const CACHE = "living-physics-book-v4-expanded-lessons";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", (event) => {
