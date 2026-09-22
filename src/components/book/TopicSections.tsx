@@ -71,7 +71,7 @@ export function buildSections(chapter: Chapter, topic: Topic, level: Level): Sec
           <p className="text-xs soft mt-4">
             Unit {chapter.unit} · {chapter.title} · about {topic.minutes} minutes ·{" "}
             {topic.formulas.length} formula{topic.formulas.length === 1 ? "" : "s"} ·{" "}
-            {topic.quiz.length} practice questions
+            {topic.quiz.length} quiz questions · {topic.examples.length} worked examples & practice
           </p>
         </div>
       ),
@@ -82,7 +82,7 @@ export function buildSections(chapter: Chapter, topic: Topic, level: Level): Sec
       body: (
         <div>
           <p className="text-[0.72rem] font-bold uppercase tracking-wider soft mb-1">{v.badge}</p>
-          <p className="text-[1.02rem] leading-relaxed font-medium">{v.lead}</p>
+          {v.lead !== v.main && <p className="text-[1.02rem] leading-relaxed font-medium">{v.lead}</p>}
           <H>Explained properly</H>
           <p className="leading-relaxed whitespace-pre-line">{v.main}</p>
           {v.main !== topic.understand.simple && level !== "standard" && (
